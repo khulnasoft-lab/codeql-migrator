@@ -29,7 +29,7 @@ inputs:
 
 runs:
   using: 'docker'
-  image: 'docker://ghcr.io/khulnasoft-lab/codeql-migrator:latest'
+  image: 'docker://ghcr.io/khulnasoft-lab/codeql-migrator:sha-041e45d'
   env:
     GITHUB_TOKEN: ${{ inputs.github-token }}
   args:
