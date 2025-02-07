@@ -1,0 +1,34 @@
+name: CodeQL Migration
+on:
+  schedule:
+    - cron: '0 0 * * 1'  # Runs every Monday
+  workflow_dispatch:
+    inputs:
+      dry-run:
+        description: 'Preview changes without applying'
+        type: boolean
+        default: false
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      
+    steps:
+      - name: Run CodeQL Migrator
+        uses: khulnasoft-lab/codeql-migrator@v1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          dry-run: ${{ inputs.dry-run }}
+          per-page: '20'
+          branch-name: 'update-codeql-v3'
+          commit-message: 'chore: update CodeQL action to v3'
+          pr-title: '⬆️ Upgrade CodeQL action to v3'
+          pr-body: |
+            This PR updates the CodeQL action from v2 to v3.
+            
+            - Upgrades GitHub CodeQL Action to latest v3
+            - Maintains existing workflow configuration
+            - Tested and verified compatibility

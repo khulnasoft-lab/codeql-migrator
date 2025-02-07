@@ -1,0 +1,37 @@
+name: CodeQL Migration
+on:
+  schedule:
+    - cron: '0 0 * * 1'
+  workflow_dispatch:
+    inputs:
+      dry-run:
+        description: 'Preview changes'
+        type: boolean
+        default: false
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: khulnasoft-lab/codeql-migrator@v1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          per-page: '20'
+          dry-run: ${{ inputs.dry-run }}
+          branch-name: 'feat/codeql-v3-upgrade'
+          max-workers: '8'
+          log-level: 'DEBUG'
+          commit-message: '⬆️ Upgrade CodeQL to v3'
+          pr-title: 'Security: Upgrade CodeQL Action to v3'
+          pr-body: |
+            # CodeQL v3 Upgrade
+            
+            This PR automatically upgrades the CodeQL Action to v3.
+            
+            ## Changes
+            - Updates CodeQL Action from v2 to v3
+            - Maintains existing workflow configuration
+            - Improves security scanning capabilities

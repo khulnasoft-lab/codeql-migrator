@@ -74,10 +74,10 @@ jobs:
 
 ## 🛠 Using as a GitHub Action
 
-You can use this tool directly as a GitHub Action in your workflows:
+Add this workflow to your repository to automatically migrate CodeQL from v2 to v3:
 
-
-name: Migrate CodeQL
+:/.github/workflows/codeql-migration.yml
+name: CodeQL Migration
 on:
   schedule:
     - cron: '0 0 * * 1'  # Runs every Monday
@@ -86,20 +86,14 @@ on:
 jobs:
   migrate:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
       - uses: khulnasoft-lab/codeql-migrator@v1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          # Optional parameters with their defaults:
-          per-page: '10'
-          dry-run: 'false'
-          branch-name: 'update-codeql-v3'
-          skip-cleanup: 'false'
-          max-workers: '4'
-          log-level: 'INFO'
-          commit-message: 'Update CodeQL action to v3'
-          pr-title: 'Update CodeQL action from v2 to v3'
-          pr-body: 'This PR updates the CodeQL action from v2 to v3.'
+
 
 
 ### Action Inputs
