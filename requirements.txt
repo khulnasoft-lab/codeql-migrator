@@ -1,0 +1,4 @@
+requests
+PyGithub
+PyYAML
+github3.py
