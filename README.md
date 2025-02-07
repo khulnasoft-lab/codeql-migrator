@@ -72,6 +72,41 @@ jobs:
         run: python migrator.py
 ```
 
+## 🛠 Using as a GitHub Action
+
+You can use this tool directly as a GitHub Action in your workflows:
+
+```yaml
+name: Migrate CodeQL
+on:
+  schedule:
+    - cron: '0 0 * * 1'  # Runs every Monday
+  workflow_dispatch:
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: khulnasoft-lab/codeql-migrator@v1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          # Optional parameters:
+          per-page: 10
+          dry-run: false
+          branch-name: 'update-codeql-v3'
+          skip-cleanup: false
+```
+
+### Action Inputs
+
+| Input | Description | Required | Default |
+|-------|-------------|----------|---------|
+| `github-token` | GitHub token for authentication | Yes | - |
+| `per-page` | Number of repositories to process | No | 10 |
+| `dry-run` | Show what would be done without making changes | No | false |
+| `branch-name` | Name of the branch to create for changes | No | update-codeql-v3 |
+| `skip-cleanup` | Skip cleanup of cloned repositories | No | false |
+
 ## 📖 How It Works
 1️⃣ **Finds repos** using CodeQL v2 via GitHub API.  
 2️⃣ **Clones the repo** and checks workflow files.  
@@ -101,6 +136,29 @@ Licensed under the **MIT License**.
 
 ## ⭐ Star This Repo!
 If this project helps you, give it a ⭐ on GitHub!
+
+## 🐳 Docker Usage
+
+The tool is available as a Docker image from GitHub Container Registry:
+
+```sh
+docker pull ghcr.io/khulnasoft-lab/codeql-migrator:latest
+```
+
+Run it with your GitHub token:
+
+```sh
+docker run -e GITHUB_TOKEN="your_token" ghcr.io/khulnasoft-lab/codeql-migrator:latest
+```
+
+You can also use it with additional parameters:
+
+```sh
+docker run -e GITHUB_TOKEN="your_token" ghcr.io/khulnasoft-lab/codeql-migrator:latest \
+  --per-page 20 \
+  --dry-run \
+  --branch-name custom-branch
+```
 
 ---
 🔥 **Automate your CodeQL upgrades today!** 🔥

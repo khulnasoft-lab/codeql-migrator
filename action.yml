@@ -1,0 +1,41 @@
+name: 'CodeQL v2 to v3 Migrator'
+description: 'Automatically migrate CodeQL workflows from v2 to v3'
+author: 'ksoft'
+
+branding:
+  icon: 'shield'
+  color: 'blue'
+
+inputs:
+  github-token:
+    description: 'GitHub token for authentication'
+    required: true
+  per-page:
+    description: 'Number of repositories to process'
+    required: false
+    default: '10'
+  dry-run:
+    description: 'Show what would be done without making actual changes'
+    required: false
+    default: 'false'
+  branch-name:
+    description: 'Name of the branch to create for the changes'
+    required: false
+    default: 'update-codeql-v3'
+  skip-cleanup:
+    description: 'Skip cleanup of cloned repositories'
+    required: false
+    default: 'false'
+
+runs:
+  using: 'docker'
+  image: 'docker://ghcr.io/khulnasoft-lab/codeql-migrator:latest'
+  env:
+    GITHUB_TOKEN: ${{ inputs.github-token }}
+  args:
+    - --per-page
+    - ${{ inputs.per-page }}
+    - ${{ inputs.dry-run == 'true' && '--dry-run' || '' }}
+    - --branch-name
+    - ${{ inputs.branch-name }}
+    - ${{ inputs.skip-cleanup == 'true' && '--skip-cleanup' || '' }}
