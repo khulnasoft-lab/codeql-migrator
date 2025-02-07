@@ -2,3 +2,4 @@ PyGithub>=2.1.1
 requests>=2.31.0
 PyYAML
 github3.py
+tqdm

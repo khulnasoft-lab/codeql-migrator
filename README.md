@@ -76,7 +76,7 @@ jobs:
 
 You can use this tool directly as a GitHub Action in your workflows:
 
-```yaml
+
 name: Migrate CodeQL
 on:
   schedule:
@@ -90,22 +90,32 @@ jobs:
       - uses: khulnasoft-lab/codeql-migrator@v1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          # Optional parameters:
-          per-page: 10
-          dry-run: false
+          # Optional parameters with their defaults:
+          per-page: '10'
+          dry-run: 'false'
           branch-name: 'update-codeql-v3'
-          skip-cleanup: false
-```
+          skip-cleanup: 'false'
+          max-workers: '4'
+          log-level: 'INFO'
+          commit-message: 'Update CodeQL action to v3'
+          pr-title: 'Update CodeQL action from v2 to v3'
+          pr-body: 'This PR updates the CodeQL action from v2 to v3.'
+
 
 ### Action Inputs
 
 | Input | Description | Required | Default |
 |-------|-------------|----------|---------|
 | `github-token` | GitHub token for authentication | Yes | - |
-| `per-page` | Number of repositories to process | No | 10 |
-| `dry-run` | Show what would be done without making changes | No | false |
-| `branch-name` | Name of the branch to create for changes | No | update-codeql-v3 |
-| `skip-cleanup` | Skip cleanup of cloned repositories | No | false |
+| `per-page` | Number of repositories to process | No | '10' |
+| `dry-run` | Show what would be done without making changes | No | 'false' |
+| `branch-name` | Name of the branch to create for changes | No | 'update-codeql-v3' |
+| `skip-cleanup` | Skip cleanup of cloned repositories | No | 'false' |
+| `max-workers` | Number of concurrent workers | No | '4' |
+| `log-level` | Logging verbosity | No | 'INFO' |
+| `commit-message` | Commit message for the changes | No | 'Update CodeQL action to v3' |
+| `pr-title` | Title for the pull request | No | 'Update CodeQL action from v2 to v3' |
+| `pr-body` | Body text for the pull request | No | 'This PR updates the CodeQL action from v2 to v3.' |
 
 ## 📖 How It Works
 1️⃣ **Finds repos** using CodeQL v2 via GitHub API.  

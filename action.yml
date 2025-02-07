@@ -32,10 +32,15 @@ runs:
   image: 'docker://ghcr.io/khulnasoft-lab/codeql-migrator:sha-041e45d'
   env:
     GITHUB_TOKEN: ${{ inputs.github-token }}
+    LOG_LEVEL: ${{ inputs.log-level || 'INFO' }}
   args:
     - --per-page
     - ${{ inputs.per-page }}
     - ${{ inputs.dry-run == 'true' && '--dry-run' || '' }}
     - --branch-name
     - ${{ inputs.branch-name }}
-    - ${{ inputs.skip-cleanup == 'true' && '--skip-cleanup' || '' }}
+    - --skip-cleanup
+    - ${{ inputs.skip-cleanup == 'true' && 'true' || 'false' }}
+    - --max-workers
+    - ${{ inputs.max-workers || '4' }}
+
